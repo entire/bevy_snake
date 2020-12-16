@@ -6,5 +6,5 @@ Make a snake clone in Bevy!
 
 `cargo run` to run
 
-## articles
+## Articles
 - [Creating a snake clone](https://mbuffett.com/posts/bevy-snake-tutorial/)
