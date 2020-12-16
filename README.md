@@ -5,3 +5,6 @@ Make a snake clone in Bevy!
 `cargo build` to build
 
 `cargo run` to run
+
+## articles
+- [Creating a snake clone](https://mbuffett.com/posts/bevy-snake-tutorial/)
