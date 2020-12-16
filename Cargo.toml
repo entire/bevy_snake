@@ -1,5 +1,5 @@
 [package]
-name = "bevy_snnake"
+name = "bevy_snake"
 version = "0.1.0"
 authors = ["Kosuke Hata <hata.kosuke@gmail.com>"]
 edition = "2018"
