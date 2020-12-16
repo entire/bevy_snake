@@ -34,16 +34,7 @@ struct LastTailPosition(Option<Position>);
 
 struct GameOverEvent;
 
-// setup 2D camera
-// bevy expects commands -> resources -> components/queries
-fn setup(mut commands: Commands, mut materials: ResMut<Assets<ColorMaterial>>) {
-    commands.spawn(Camera2dComponents::default());
-    commands.insert_resource(Materials {
-        head_material: materials.add(Color::rgb(0.6, 0.6, 0.6).into()),
-        segment_material: materials.add(Color::rgb(0.3, 0.3, 0.3).into()),
-        food_material: materials.add(Color::rgb(1.0, 0.0, 1.0).into()),
-    });
-}
+
 
 fn spawn_snake(
     mut commands: Commands, 
@@ -249,7 +240,7 @@ struct Food;
 struct FoodSpawnTimer(Timer);
 impl Default for FoodSpawnTimer {
     fn default() -> Self {
-        Self(Timer::new(Duration::from_millis(1000), true))
+        Self(Timer::new(Duration::from_millis(2000), true))
     }
 }
 
@@ -294,6 +285,17 @@ impl Direction {
             Self::Left => Self::Right,
         }
     }
+}
+
+// setup 2D camera
+// bevy expects commands -> resources -> components/queries
+fn setup(mut commands: Commands, mut materials: ResMut<Assets<ColorMaterial>>) {
+    commands.spawn(Camera2dComponents::default());
+    commands.insert_resource(Materials {
+        head_material: materials.add(Color::rgb(0.6, 0.6, 0.6).into()),
+        segment_material: materials.add(Color::rgb(0.3, 0.3, 0.3).into()),
+        food_material: materials.add(Color::rgb(1.0, 0.0, 1.0).into()),
+    });
 }
 
 fn main() {
