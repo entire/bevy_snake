@@ -2,9 +2,10 @@
 use bevy::prelude::*;
 use bevy::render::pass::ClearColor;
 use std::time::Duration;
-use rand::prelude::random;
 use crate::grid::{Position, Size};
+use crate::food::{Food};
 
+mod food;
 mod grid;
 
 // setup snake
@@ -16,7 +17,7 @@ struct SnakeHead {
 struct SnakeMoveTimer(Timer);
 
 
-struct Materials {
+pub struct Materials {
     head_material: Handle<ColorMaterial>,
     segment_material: Handle<ColorMaterial>,
     food_material: Handle<ColorMaterial>, 
@@ -33,8 +34,6 @@ struct GrowthEvent;
 struct LastTailPosition(Option<Position>);
 
 struct GameOverEvent;
-
-
 
 fn spawn_snake(
     mut commands: Commands, 
@@ -79,8 +78,8 @@ fn spawn_segment(
         .with(Size::square(0.65))
         .current_entity()
         .unwrap()
-
 }
+
 
 // this is a Query type
 fn snake_movement(
@@ -235,38 +234,6 @@ fn game_over(
     }
 }
 
-struct Food;
-
-struct FoodSpawnTimer(Timer);
-impl Default for FoodSpawnTimer {
-    fn default() -> Self {
-        Self(Timer::new(Duration::from_millis(2000), true))
-    }
-}
-
-fn food_spawner(
-    mut commands: Commands,
-    materials: Res<Materials>,
-    time: Res<Time>,
-    mut timer: Local<FoodSpawnTimer>,
-) {
-    timer.0.tick(time.delta_seconds);
-    if timer.0.finished {
-        commands
-            .spawn(SpriteComponents {
-                material: materials.food_material.clone(),
-                ..Default::default()
-            })
-            .with(Food)
-            .with(Position {
-                x: (random::<f32>() * grid::ARENA_WIDTH as f32) as i32,
-                y: (random::<f32>() * grid::ARENA_HEIGHT as f32) as i32,
-            })
-            .with(Size::square(0.8));
-    }
-}
-
-
 
 #[derive(PartialEq, Copy, Clone)]
 enum Direction {
@@ -318,7 +285,7 @@ fn main() {
         .add_system(snake_movement.system())
         .add_system(position_translation.system())
         .add_system(size_scaling.system())
-        .add_system(food_spawner.system())
+        .add_system(food::food_spawner.system())
         .add_system(snake_timer.system())
         .add_event::<GrowthEvent>()
         .add_event::<GameOverEvent>()
